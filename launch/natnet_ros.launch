@@ -4,7 +4,7 @@
   <!-- LOGGING -->
   <arg name="log_internals" default="false"/>
   <arg name="log_frames" default="false"/>
-  <arg name="log_latencies" default="false" />
+  <arg name="log_latencies" default="false"/>
 
   <!-- CONNECTION -->
   <arg name="serverIP" default="192.168.1.6"/>
