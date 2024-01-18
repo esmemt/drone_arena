@@ -2,7 +2,9 @@
 
 import rospy
 
-import numpy as np  
+import numpy as np 
+
+import math 
 
 from sensor_msgs.msg import LaserScan   
 
@@ -17,8 +19,8 @@ class NewLaserClass():
  
 
 		################# SUBSCRIBERS ###################
-		rospy.Subscriber("scan", LaserScan, self.laser_cb) 
-		pub = rospy.Publisher("new_scan", LaserScan, queue_size = 1)
+		rospy.Subscriber("/tb3_0/scan", LaserScan, self.laser_cb) 
+		pub = rospy.Publisher("/tb3_0/new_scan", LaserScan, queue_size = 1)
 		
 		############ CONSTANTS ################ 
 		self.laser = LaserScan()
@@ -37,24 +39,27 @@ class NewLaserClass():
 				
 				for angle in range(270,360,2):
 					index = int((angle - angle_min)/angle_increment)
+					print(str(index) + " " + str(j))
+					if index >= (len(self.laser.ranges) - 1):
+						index = (len(self.laser.ranges) - 1)
 					NewRanges[j] = self.laser.ranges[index]
 					j += 1
 				for angle in range(2,90,2):
 					j += 1
-					print(j)
 					index = int((angle - angle_min)/angle_increment)
 					NewRanges[j] = self.laser.ranges[index]
-
-				for x in len(NewRanges):
+				
+				for i in range(0,90):
 					if NewRanges[0] == 0:
 						for value in NewRanges:
 							if value != 0:
 								NewRanges[0] = value
 								break
-					if NewRanges[x] >= 8.0:
-						NewRanges[x] == 8.0
-					elif NewRanges[x] == 0:
-						NewRanges[x] == NewRanges[x - 1]
+					if NewRanges[i] >= 8.0:
+						NewRanges[i] = 8.0
+					elif NewRanges[i] <= 0.16:
+						NewRanges[i] = NewRanges[i - 1]
+						
 				new_scan = LaserScan()
 				new_scan.header.frame_id = self.laser.header.frame_id
 				new_scan.angle_min = -np.pi/2.0
