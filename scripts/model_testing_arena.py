@@ -64,9 +64,7 @@ while not rospy.is_shutdown():
 	ros_rate = rospy.Rate(10) # 10Hz
 	ros_rate.sleep()
 	if NewRanges[0] != '':
-		# Change the infinite values to max sensor distance range (3.5m)
 		NN = np.array(NewRanges)
-		NN[np.isinf(NN)] = 3.5
 		# print(NN)
 		# print(NN.shape)
 		TPX = np.array(TP_x)
