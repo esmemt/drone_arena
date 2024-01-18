@@ -34,29 +34,8 @@ y = 0.0
 
 # Create function to get and select the laser scan values of the mobile robot
 def callback(msg):
-	lim_l = len(msg.ranges) - 1
-	j = 0
-	# msg.ranges = [] Input list with 360 distance values
-	# NewRanges = [] Output list with 90 distance values in the front of the robot (0 to 180 degrees)
-	# Change of orientation and values selected every 2 degrees
-	for i in range(44,-1,-1):
-		NewRanges[i] = float(msg.ranges[lim_l - j])
-		if NewRanges[0] >= 8.0:
-			NewRanges[0] = 8.0
-		if NewRanges[i] <= 0.175:
-			NewRanges[i] = NewRanges[i-1]
-		elif NewRanges[i] > 8.0:
-			NewRanges[i] = NewRanges[i-1]
-		j += 1
-	for i in range(45,90):
-		NewRanges[i] = float(msg.ranges[j])
-		if NewRanges[i] == 0.0:
-			NewRanges[i] =  NewRanges[i-1]
-		elif NewRanges[i] >= 8.0:
-			NewRanges[i] = NewRanges[i-1]
-		j += 1
-	#To know how many values the list has
-	#print len(NewRanges)
+	for i in range(90):
+		NewRanges[i] = msg.ranges[i]
 	
 # Create function to get the position x,y of the of the mobile robot (tb3_0)
 def newOdom(msg):
@@ -70,7 +49,7 @@ def newOdom(msg):
 rospy.init_node('testing')
 
 # Subscribe to topics
-sub1 = rospy.Subscriber('/tb3_0/scan', LaserScan, callback)
+sub1 = rospy.Subscriber('/tb3_0/new_scan', LaserScan, callback)
 sub2 = rospy.Subscriber("/natnet_ros/tb0/pose", PoseStamped, newOdom)
 
 speed = Twist()
