@@ -39,11 +39,11 @@ class NewLaserClass():
 				
 				for angle in range(270,360,2):
 					index = int((angle - angle_min)/angle_increment)
-					print(str(index) + " " + str(j))
 					if index >= (len(self.laser.ranges) - 1):
 						index = (len(self.laser.ranges) - 1)
 					NewRanges[j] = self.laser.ranges[index]
 					j += 1
+					
 				for angle in range(2,90,2):
 					j += 1
 					index = int((angle - angle_min)/angle_increment)
