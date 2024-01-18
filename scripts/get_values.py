@@ -33,8 +33,6 @@ csv_writer = csv.writer(csv_data)
 def callback(msg):
 	for i in range(90):
 		NewRanges[i] = msg.ranges[i]
-	print(msg.ranges)
-	print(NewRanges)
 	
 # Create function to get the linear velocity in x and the angular velocity in z of the mobile robot (tb3_0)
 def callback2(msg):
