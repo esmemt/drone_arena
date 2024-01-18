@@ -23,7 +23,7 @@ TP_y = 1.65
 vel_x_linear = None
 vel_z_angular = None
 
-NewRanges = [''] * 90
+NewRanges = [0] * 90
 
 # Write in .csv
 csv_data = io.BytesIO()
@@ -31,27 +31,10 @@ csv_writer = csv.writer(csv_data)
 
 # Create function to get and select the laser scan values of the mobile robot
 def callback(msg):
-	lim_l = len(msg.ranges) - 1
-	j = 0
-	# msg.ranges = [] Input list with 230-250 distance values
-	# NewRanges = [] Output list with 90 distance values in the front of the robot (0 to 180 degrees)
-	# Change of orientation and values selected every 2 degrees
-	for i in range(44,-1,-1):
-		NewRanges[i] = msg.ranges[lim_l - j]
-		if NewRanges[i] == 0.0:
-			NewRanges[i] = 100.0
-		j += 1
-	for i in range(45,90):
-		NewRanges[i] = msg.ranges[j]
-		if NewRanges[i] == 0.0:
-			NewRanges[i] = 100.0
-		j += 1
-	new_scan = LaserScan()
-	new_scan.header.frame_id = msg.header.frame_id
-	new_scan.ranges = New
-	# To know how many values the list has
-	#print(len(NewRanges))
-	#print(NewRanges)
+	for i in range(90):
+		NewRanges[i] = msg.ranges[i]
+	print(msg.ranges)
+	print(NewRanges)
 	
 # Create function to get the linear velocity in x and the angular velocity in z of the mobile robot (tb3_0)
 def callback2(msg):
@@ -73,7 +56,7 @@ def position_cb(msg):
 rospy.init_node('get_values')
 
 # Subscribe to topics
-sub1 = rospy.Subscriber('/tb3_0/scan', LaserScan, callback)
+sub1 = rospy.Subscriber('/tb3_0/new_scan', LaserScan, callback)
 sub2 = rospy.Subscriber('/tb3_0/cmd_vel', Twist, callback2)
 sub3 = rospy.Subscriber("/natnet_ros/tb0/pose", PoseStamped, position_cb)
 
@@ -95,6 +78,6 @@ while not rospy.is_shutdown():
 		# Change the infinite values to max sensor distance range (3.5m)
 		NN = np.array(PrintVariable)
 		print(NN)
-		with open('trainingDAB.csv', 'a') as file:
+		with open('nomasesprueba.csv', 'a') as file:
 			writer = csv.writer(file)
 			writer.writerow(NN)
