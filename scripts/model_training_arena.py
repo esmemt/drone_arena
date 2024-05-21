@@ -15,11 +15,11 @@ from sklearn.model_selection import train_test_split
 from tensorflow.keras.layers import Dense, Dropout, LSTM, Masking, Embedding
 
 plt.rcParams.update({'font.size': 24})
-plt.rcParams['font.family'] = ['serif']
-plt.rcParams['font.serif'] = ['Times New Roman']
+plt.rcParams['font.family'] = ['Nimbus Roman']
+#plt.rcParams['font.NimbusRoman-Regular'] = ['Nimbus Roman']
 
 # Prepare and load data
-dataframe = read_csv("trainingDAB_n.csv", delim_whitespace=False, header=None)
+dataframe = read_csv("trainingDA_nueva_mod.csv", delim_whitespace=False, header=None)
 dataset = dataframe.values
 print(dataset.shape)
 
@@ -54,19 +54,19 @@ x_train, x_test, y_train, y_test = train_test_split(XN, YN, test_size = 0.2, ran
 # Dropout of 20% to reduce overfitting
 model = Sequential()
 model.add(LSTM(units = 188, return_sequences = True, input_shape = (1,94)))
-model.add(Dropout(0.2))
+model.add(Dropout(0.3))
 model.add(LSTM(units = 94, return_sequences = True))
-model.add(Dropout(0.2))
+model.add(Dropout(0.3))
 model.add(LSTM(units = 94, return_sequences = True))
-model.add(Dropout(0.2))
+model.add(Dropout(0.3))
 model.add(LSTM(units = 94))
-model.add(Dropout(0.2))
+model.add(Dropout(0.3))
 model.add(Dense(units = 2))
 model.compile(loss = 'mean_squared_error', optimizer = 'adam', metrics = ['accuracy'])
 model.summary()
 
 # Fit model
-history = model.fit(x_train, y_train, epochs = 500, validation_data = (x_test, y_test), batch_size = 32)
+history = model.fit(x_train, y_train, epochs = 400, validation_data = (x_test, y_test), batch_size = 32)
 
 # Make predictions
 ypred = model.predict(x_test)
@@ -89,5 +89,5 @@ plt.legend(['train', 'test'], loc='upper right')
 plt.show()
 
 # Save model and architecture to single file
-model.save("trainingDAB_n.h5")
+model.save("trainingDA_nueva_mod_400epoch_030_2.h5")
 print("Saved model to disk")

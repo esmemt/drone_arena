@@ -17,13 +17,13 @@ i=0
 global NewRanges
 
 # Set desired target point
-TP_x = -0.34
-TP_y = 1.65
+TP_x = 0.0
+TP_y = 1.5
 
 vel_x_linear = None
 vel_z_angular = None
 
-NewRanges = [0] * 90
+NewRanges = [''] * 90
 
 # Write in .csv
 csv_data = io.BytesIO()
@@ -61,8 +61,8 @@ sub3 = rospy.Subscriber("/natnet_ros/tb0/pose", PoseStamped, position_cb)
 # Create while loop
 while not rospy.is_shutdown():
 
-	# Store values in a .csv file every 0.1 seconds
-	ros_rate = rospy.Rate(10) # 10Hz
+	# Store values in a .csv file every 0.2 seconds
+	ros_rate = rospy.Rate(5) # 10Hz
 	ros_rate.sleep()
 	PrintVariable = NewRanges[:]
 	PrintVariable.append(TP_x)
@@ -76,6 +76,6 @@ while not rospy.is_shutdown():
 		# Change the infinite values to max sensor distance range (3.5m)
 		NN = np.array(PrintVariable)
 		print(NN)
-		with open('nomasesprueba.csv', 'a') as file:
+		with open('trainingDA_arc_2.csv', 'a') as file:
 			writer = csv.writer(file)
 			writer.writerow(NN)

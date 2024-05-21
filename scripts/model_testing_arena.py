@@ -13,7 +13,7 @@ from geometry_msgs.msg import PoseStamped
 from tensorflow.keras.models import load_model
 
 # Load neural network model
-model = load_model('trainingDAB_n.h5')
+model = load_model('trainingDA_nueva_mod.h5')
 
 # Summarize model
 model.summary()
@@ -23,11 +23,11 @@ i=0
 global NewRanges
 vel_x_linear = None
 vel_z_angular = None
-NewRanges = [0] * 90
+NewRanges = [''] * 90
 
 # Set desired target point
-TP_x = -0.34
-TP_y = 1.65
+TP_x = -0.3
+TP_y = 1.8
 
 x = 0.0
 y = 0.0
@@ -60,8 +60,8 @@ pub = rospy.Publisher('/tb3_0/cmd_vel', Twist, queue_size = 1)
 # Create while loop
 while not rospy.is_shutdown():
 	
-	# Get laser values every 0.1 seconds
-	ros_rate = rospy.Rate(10) # 10Hz
+	# Get laser values every 0.2 seconds
+	ros_rate = rospy.Rate(5) # 10Hz
 	ros_rate.sleep()
 	if NewRanges[0] != '':
 		NN = np.array(NewRanges)
