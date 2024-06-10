@@ -17,8 +17,8 @@ i=0
 global NewRanges
 
 # Set desired target point
-TP_x = 0.0
-TP_y = 1.5
+TP_x = -0.3
+TP_y = 1.8
 
 vel_x_linear = None
 vel_z_angular = None
@@ -76,6 +76,6 @@ while not rospy.is_shutdown():
 		# Change the infinite values to max sensor distance range (3.5m)
 		NN = np.array(PrintVariable)
 		print(NN)
-		with open('trainingDA_arc_2.csv', 'a') as file:
+		with open('trainingDA.csv', 'a') as file:
 			writer = csv.writer(file)
 			writer.writerow(NN)

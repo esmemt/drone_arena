@@ -13,7 +13,7 @@ from geometry_msgs.msg import PoseStamped
 from tensorflow.keras.models import load_model
 
 # Load neural network model
-model = load_model('trainingDA_nueva_mod.h5')
+model = load_model('trainingDA.h5')
 
 # Summarize model
 model.summary()
@@ -61,43 +61,23 @@ pub = rospy.Publisher('/tb3_0/cmd_vel', Twist, queue_size = 1)
 while not rospy.is_shutdown():
 	
 	# Get laser values every 0.2 seconds
-	ros_rate = rospy.Rate(5) # 10Hz
+	ros_rate = rospy.Rate(5) # 5Hz
 	ros_rate.sleep()
 	if NewRanges[0] != '':
 		NN = np.array(NewRanges)
-		# print(NN)
-		# print(NN.shape)
 		TPX = np.array(TP_x)
 		TPY = np.array(TP_y)
-		# print(TPX)
-		# print(TPX.shape)
-		# print(TPY)
-		# print(TPY.shape)
 		LTPX = np.append(NN,TPX)
-		#print(LTPX)
 		LTPXTPY = np.append(LTPX,TPY)
-		# print(LTPXTPY)
-		# print(LTPXTPY.shape)
 		IPX = np.array(x)
 		IPY = np.array(y)
-		# print(IPX)
-		# print(IPX.shape)
-		# print(IPY)
-		# print(IPY.shape)
 		LTPXTPYIPX = np.append(LTPXTPY,IPX)
-		# print(LTPXTPYIPX)
-		# print(LTPXTPYIPX.shape)
 		LTPXTPYIPXIPY = np.append(LTPXTPYIPX,IPY)
-		# print(LTPXTPYIPXIPY)
-		# print(LTPXTPYIPXIPY.shape)
 		New = LTPXTPYIPXIPY.reshape(1, 1, LTPXTPYIPXIPY.shape[0])
-		# print(New)
-		# print(New.shape)
 		print("Target Point:", TP_x, TP_y)
 		print("Current Point:", x, y)
 		ypredreal = model.predict(New)
 		print("Predicted linear and angular velocity:", ypredreal)
-		# print(ypredreal.shape)
 		# Publish predicted linear and angular speed on Twist
 		speed.linear.x = ypredreal[0,0]
 		speed.angular.z = ypredreal[0,1]

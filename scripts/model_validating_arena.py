@@ -15,17 +15,15 @@ from matplotlib.ticker import FuncFormatter
 
 plt.rcParams.update({'font.size': 24})
 plt.rcParams['font.family'] = ['Nimbus Roman']
-#plt.rcParams['font.NimbusRoman-Regular'] = ['Nimbus Roman']
 
 # Load neural network model
-model = load_model('trainingDA_nueva_mod_400epoch_030_2.h5')
+model = load_model('trainingDA.h5')
 
 # Summarize model
 model.summary()
-# tf.keras.utils.plot_model(model, to_file='trainingTP1-2-9-10-14-15OBS1-2-3.png', show_shapes=True, show_layer_names=True)
 
 # Prepare and load data
-dataframe = read_csv("trainingDA_nueva_mod.csv", delim_whitespace=False, header=None)
+dataframe = read_csv("trainingDA.csv", delim_whitespace=False, header=None)
 dataset = dataframe.values
 
 # Split into input (X) and output (Y) variables
@@ -61,7 +59,6 @@ print("%s: %.2f%%" % (model.metrics_names[1], score[1]*100))
 
 # Make predictions
 ypred = model.predict(XN)
-# print(ypred)
 
 # Graph LSTM multi-output prediction
 x_ax = range(len(XN))

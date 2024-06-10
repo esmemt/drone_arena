@@ -16,7 +16,6 @@ from tensorflow.keras.layers import Dense, Dropout, LSTM, Masking, Embedding
 
 plt.rcParams.update({'font.size': 24})
 plt.rcParams['font.family'] = ['Nimbus Roman']
-#plt.rcParams['font.NimbusRoman-Regular'] = ['Nimbus Roman']
 
 # Prepare and load data
 dataframe = read_csv("trainingDA_nueva_mod.csv", delim_whitespace=False, header=None)
@@ -51,7 +50,7 @@ x_train, x_test, y_train, y_test = train_test_split(XN, YN, test_size = 0.2, ran
 # Define LSTM sequential network model
 # Network architecture: input layer with the 90 scan readings plus the target point and the mobile robot position in the free space
 # Three hidden layers of 94 units each found by trial and error
-# Dropout of 20% to reduce overfitting
+# Dropout of 30% to reduce overfitting
 model = Sequential()
 model.add(LSTM(units = 188, return_sequences = True, input_shape = (1,94)))
 model.add(Dropout(0.3))
@@ -89,5 +88,5 @@ plt.legend(['train', 'test'], loc='upper right')
 plt.show()
 
 # Save model and architecture to single file
-model.save("trainingDA_nueva_mod_400epoch_030_2.h5")
+model.save("trainingDA.h5")
 print("Saved model to disk")
